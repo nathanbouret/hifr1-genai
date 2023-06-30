@@ -18,7 +18,7 @@ __pycache__
 # ignore big data files and folders
 **/.data
 **/.log
-**/.output
+**/output/*
 
 # ignore results files
 
