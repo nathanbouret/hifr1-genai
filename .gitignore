@@ -16,8 +16,8 @@ __pycache__
 **/.idea
 
 # ignore big data files and folders
-**/.data
-**/.log
+**/data/*
+**/log/*
 **/output/*
 
 # ignore results files
