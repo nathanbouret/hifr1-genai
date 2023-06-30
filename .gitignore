@@ -19,6 +19,7 @@ __pycache__
 **/data/*
 **/log/*
 **/output/*
+**/HIFR1_GENAI.egg-info/*
 
 # ignore results files
 
