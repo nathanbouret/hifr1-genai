@@ -35,13 +35,13 @@ def run_llm_pipeline(selected_role, user_text_question):
     )
 
     # generate context
-    context = generate_context(user_question=user_text_question, embeddings)
+    context = generate_context(user_question=user_text_question, embeddings=embeddings)
 
     # create main prompt
     main_prompt = create_prompt_1(user_question=user_text_question, user_role=selected_role, context=context)
 
     # call llm to answer
-    answer = call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt):
+    answer = call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt)
 
     return answer
 

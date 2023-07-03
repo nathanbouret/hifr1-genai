@@ -2,19 +2,19 @@
 
 def gcp_config():
     GCP_CONFIG = {
-        'PROJECT_NAME' = 'gen-hi-france-genai-force1'
-        'PROJECT_ID' = 'gen-hi-france-genai-force1'
-        'PROJECT_NUMBER'= '881178893280'
-        'REGION' = 'us-central1'
-        'BUCKET' = 'gs://marzi-bucket' 
-        'DIMENSIONS' = 768
+        'PROJECT_NAME' : 'gen-hi-france-genai-force1',
+        'PROJECT_ID' : 'gen-hi-france-genai-force1',
+        'PROJECT_NUMBER' : '881178893280',
+        'REGION' : 'us-central1',
+        'BUCKET' : 'gs://marzi-bucket',
+        'DIMENSIONS' : 768
     }
     return GCP_CONFIG
 
 def embedding_config():
     EMBEDDING_CONFIG = {
-        'EMBEDDING_QPM' = 100
-        'EMBEDDING_NUM_BATCH' = 5
+        'EMBEDDING_QPM' : 100,
+        'EMBEDDING_NUM_BATCH' : 5
     }
     return EMBEDDING_CONFIG
 
