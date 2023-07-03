@@ -2,7 +2,7 @@
 import sys
 sys.path.insert(1, "../../")
 
-from corpus_processor.src import read_documents
+from corpus_processor.src.corpus_to_text import read_documents
 from context_generator.src.split_docs import split_docus_to_chuncks
 from context_generator.src.extract_embeddings import extract_embeddings_from_documents 
 
