@@ -23,9 +23,9 @@ from langchain.embeddings import VertexAIEmbeddings
 from langchain.llms import VertexAI
 
 # custom methods
-from vectorizer import doc_to_vector
-from vectorizer import get_vectorstore_retriever
-from sampler import get_relevant_documents
+from context_generator.src.vectorizer import doc_to_vector
+from context_generator.src.vectorizer import get_vectorstore_retriever
+from context_generator.src.sampler import get_relevant_documents
 
 
 def generate_context(user_question, embeddings):

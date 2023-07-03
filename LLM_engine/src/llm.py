@@ -20,7 +20,7 @@ from langchain.chat_models import ChatVertexAI
 from langchain.embeddings import VertexAIEmbeddings
 from langchain.llms import VertexAI
 
-from utils import rate_limit
+from utils.utils import rate_limit
 import config
 
 
