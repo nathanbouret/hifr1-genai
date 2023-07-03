@@ -1,6 +1,12 @@
 import streamlit as st
 from GenaiHachathonHI import run, chain_QA
 
+
+LLM_CONFIG = config.llm_config()
+CHATLLM_CONFIG = config.chat_llm_config()
+EMBEDDING_CONFIG = config.embedding_config()
+
+
 # 'what was the main goal behind investing in cloud technology?'
 # how can pharmaceutical companies drive value growth?
 
