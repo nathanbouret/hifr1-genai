@@ -1,11 +1,10 @@
 import streamlit as st
-from GenaiHachathonHI import run, chain_QA
 
+from config import config
 
-LLM_CONFIG = config.llm_config()
-CHATLLM_CONFIG = config.chat_llm_config()
-EMBEDDING_CONFIG = config.embedding_config()
-
+from LLM_engine.src.llm import call_llm
+from context_generator.src.context_generator import generate_context
+from main_prompt_creator.src.main_prompt_creator import create_prompt_1
 
 # 'what was the main goal behind investing in cloud technology?'
 # how can pharmaceutical companies drive value growth?
@@ -21,31 +20,57 @@ questions_CxO = ['what is key industrial capabilities of the companies?',
                 'what has been the challenges for healthcare companies since 2020?']
 question_legalDP = ['what is ....']
 
+def run_llm_pipeline(selected_role, user_text_question):
 
-def question_answering_behavior(): 
-    selected_role = st.selectbox(label='Your role', options=roles)
+    # get configuration infos
+    GCP_CONFIG = config.gcp_config()
+    LLM_CONFIG = config.llm_config()
+    CHATLLM_CONFIG = config.chat_llm_config()
+    EMBEDDING_CONFIG = config.embedding_config()
 
-    if selected_role and selected_role=='business analyst':
-        selected_question = st.selectbox(label='Question', options=questions_BA)
-    elif selected_role and selected_role=='CxO':
-        selected_question = st.selectbox(label='Question', options=questions_CxO)
-    elif selected_role and selected_role=='legal dep':
-        selected_question = st.selectbox(label='Question', options=question_legalDP)
+    # embedding model initialization
+    embeddings = CustomVertexAIEmbeddings(
+        requests_per_minute=EMBEDDING_CONFIG.get("EMBEDDING_QPM"),
+        num_instances_per_batch=EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH"),
+    )
 
-    submitted_question = st.button(key='question_submit_buttom', label='Submit')
-    if submitted_question:
-        answer = run(selected_role, selected_question)
-        st.write(answer)
+    # generate context
+    context = generate_context(user_question=user_text_question, embeddings)
+
+    # create main prompt
+    main_prompt = create_prompt_1(user_question=user_text_question, user_role=selected_role, context=context)
+
+    # call llm to answer
+    answer = call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt):
+
+    return answer
+
+
+# def question_answering_behavior(): 
+#     selected_role = st.selectbox(label='Your role', options=roles)
+
+#     if selected_role and selected_role=='business analyst':
+#         selected_question = st.selectbox(label='Question', options=questions_BA)
+#     elif selected_role and selected_role=='CxO':
+#         selected_question = st.selectbox(label='Question', options=questions_CxO)
+#     elif selected_role and selected_role=='legal dep':
+#         selected_question = st.selectbox(label='Question', options=question_legalDP)
+
+#     submitted_question = st.button(key='question_submit_buttom', label='Submit')
+#     if submitted_question:
+#         answer = run(selected_role, selected_question)
+#         st.write(answer)
 
 
 def chat_behavior():
     selected_role = st.selectbox(label='Your rule', options=roles)
     user_text_question = st.text_input(label='Enter some text')
+    
     if user_text_question:
-        # answer = run(selected_role, user_text_question)
-        llm_response = chain_QA(selected_role, user_text_question)
-        st.write(llm_response['result'])
-        for source in llm_response["source_documents"]:
+        answer = run_llm_pipeline(selected_role, user_text_question)
+
+        st.write(answer['result'])
+        for source in answer["source_documents"]:
             st.write(source.metadata['source'])
 
 
@@ -54,7 +79,8 @@ if __name__ == "__main__":
     option = st.radio("Select a mode for interaction with HI application:", ('LLM QA', 'Chat'))
 
     if  option == "LLM QA":
-        question_answering_behavior()
+        # question_answering_behavior()
+        pass
     elif option == "Chat":
         chat_behavior()
 

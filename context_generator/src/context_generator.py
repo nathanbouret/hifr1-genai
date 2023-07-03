@@ -28,7 +28,7 @@ from vectorizer import get_vectorstore_retriever
 from sampler import get_relevant_documents
 
 
-def generate_context():
+def generate_context(user_question, embeddings):
 
     vector_store = doc_to_vector(embeddings, doc_type='txt', vector_store_name='FAISS')
     retriever = get_vectorstore_retriever(vector_store)
