@@ -1,6 +1,6 @@
 
 from google.api_core.client_options import ClientOptions
-from google.cloud import documentai  # type: ignore
+# from google.cloud import documentai  # type: ignore  # import error to be fixed  
 
 #### this function initied by Marzieh -> to be updated and adapted by Alfredo
 def read_documents(data_dir, type):
@@ -25,7 +25,7 @@ def read_documents(data_dir, type):
 #mime_type = "application/pdf" # Refer to https://cloud.google.com/document-ai/docs/file-types for supported file types
 # field_mask = "text,entities,pages.pageNumber"  # Optional. The fields to return in the Document object.
 # processor_version_id = "YOUR_PROCESSOR_VERSION_ID" # Optional. Processor version to use
-
+"""
 # TODO(developer): Uncomment these variables before running the sample.
 project_id = "gen-hi-france-genai-force1"
 location = "us"
@@ -92,3 +92,5 @@ quickstart(project_id = project_id,
     processor_type=processor_type,
     file_path=file_path,
     mime_type=mime_type)
+
+"""
