@@ -1,0 +1,25 @@
+# ignore environment files
+**/.pytest_cache
+**/venv
+**/.vscode
+**/.coverage
+**/.egg-info
+**.idea
+*.pyc
+*.pyo
+.ipynb_checkpoints
+__pycache__
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/.ipynb_checkpoints
+**/.idea
+
+# ignore big data files and folders
+**/data/*
+**/log/*
+**/output/*
+**/HIFR1_GENAI.egg-info/*
+
+# ignore results files
+
