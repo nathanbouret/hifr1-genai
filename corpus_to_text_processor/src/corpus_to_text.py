@@ -2,6 +2,21 @@
 from google.api_core.client_options import ClientOptions
 from google.cloud import documentai  # type: ignore
 
+#### this function initied by Marzieh -> to be updated and adapted by Alfredo
+def read_documents(data_dir, type):
+    if type == 'txt':
+        loader = DirectoryLoader(data_dir, glob="./*.txt", loader_cls=TextLoader)
+        documents = loader.load()
+        print(f'# of .txt documents: {len(documents)}')
+        print(f'content of the first document:\n{documents[0].page_content[0:100]}...\n')
+    if type == 'pdf':
+        loader = DirectoryLoader(data_dir, glob="./*.pdf", loader_cls=PyPDFLoader)
+        documents = loader.load()
+        print(f'# of pages in .pdf documents: {len(documents)}')
+        print(f'content of the first document:\n{documents[0].page_content[0:100]}...\n')
+    return documents
+############################################################################################
+
 
 #project_id = "gen-hi-france-genai-force1"
 #location = "us"
