@@ -53,6 +53,7 @@ def run_llm_pipeline(selected_role, user_text_question):
 
     # call llm to answer
     answer = call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt)
+    # answer = answer.text
 
     return answer
 
@@ -79,10 +80,12 @@ def chat_behavior():
     
     if user_text_question:
         answer = run_llm_pipeline(selected_role, user_text_question)
+        print(answer)
 
-        st.write(answer['result'])
-        for source in answer["source_documents"]:
-            st.write(source.metadata['source'])
+        # st.write(answer['result'])
+        st.write(answer)
+        # for source in answer["source_documents"]:
+        #     st.write(source.metadata['source'])
 
 
 if __name__ == "__main__":
