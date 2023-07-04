@@ -2,6 +2,7 @@ import streamlit as st
 
 from config import config
 
+from LLM_engine.src.llm import CustomVertexAIEmbeddings
 from LLM_engine.src.llm import call_llm
 from context_generator.src.context_generator import generate_context
 from main_prompt_creator.src.main_prompt_creator import create_prompt_1

@@ -23,7 +23,6 @@ from langchain.llms import VertexAI
 from utils.utils import rate_limit
 import config
 
-
 class CustomVertexAIEmbeddings(VertexAIEmbeddings, BaseModel):
     requests_per_minute: int
     num_instances_per_batch: int
@@ -51,6 +50,7 @@ def call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt):
 
     PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
     REGION = GCP_CONFIG.get('REGION')
+    aiplatform.init(project=PROJECT_ID, location=REGION)
     vertexai.init(project=PROJECT_ID, location=REGION)
 
     # LLM model initialization
