@@ -26,6 +26,7 @@ from langchain.llms import VertexAI
 from context_generator.src.vectorizer import doc_to_vector
 from context_generator.src.vectorizer import get_vectorstore_retriever
 from context_generator.src.sampler import get_relevant_documents
+from utils.utils import get_source_file
 
 
 def generate_context(user_question, embeddings):

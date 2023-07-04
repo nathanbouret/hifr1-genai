@@ -72,12 +72,12 @@ def call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt):
         verbose=True,
     )
 
-    # embedding model initialization
-    embeddings = CustomVertexAIEmbeddings(
-        requests_per_minute=EMBEDDING_CONFIG.get('EMBEDDING_QPM'),
-        num_instances_per_batch=EMBEDDING_CONFIG.get('EMBEDDING_NUM_BATCH'),
-        )
+    # # embedding model initialization
+    # embeddings = CustomVertexAIEmbeddings(
+    #     requests_per_minute=EMBEDDING_CONFIG.get('EMBEDDING_QPM'),
+    #     num_instances_per_batch=EMBEDDING_CONFIG.get('EMBEDDING_NUM_BATCH'),
+    #     )
 
-    answer = llm(prompt.format())
+    answer = llm(main_prompt.format())
     print(f"LLM Output: {answer}")
     return answer

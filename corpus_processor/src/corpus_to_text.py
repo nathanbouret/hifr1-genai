@@ -1,5 +1,8 @@
 
 from google.api_core.client_options import ClientOptions
+from langchain.document_loaders import DirectoryLoader
+from langchain.document_loaders import TextLoader
+from langchain.document_loaders import PyPDFLoader
 # from google.cloud import documentai  # type: ignore  # import error to be fixed  
 
 #### this function initied by Marzieh -> to be updated and adapted by Alfredo

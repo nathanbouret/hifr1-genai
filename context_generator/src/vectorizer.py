@@ -1,12 +1,12 @@
 
 import sys
-sys.path.insert(1, "../../")
+# sys.path.insert(1, "../../")
 
 from corpus_processor.src.corpus_to_text import read_documents
 from context_generator.src.split_docs import split_docus_to_chuncks
 from context_generator.src.extract_embeddings import extract_embeddings_from_documents 
 
-DATA_DIR = r'..\..\corpus_processor\data'
+DATA_DIR = r'C:/Users/hbayahme/.vscode/projects/hifr1-genai/corpus_processor/data'
 
 def doc_to_vector(embeddings, doc_type, vector_store_name='FAISS'):
     # 1. reading all documents (.txt or .pdf) 

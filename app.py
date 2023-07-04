@@ -1,4 +1,5 @@
 import streamlit as st
+import vertexai
 
 from config import config
 
@@ -29,10 +30,19 @@ def run_llm_pipeline(selected_role, user_text_question):
     CHATLLM_CONFIG = config.chat_llm_config()
     EMBEDDING_CONFIG = config.embedding_config()
 
+    PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
+    REGION = GCP_CONFIG.get('REGION')
+    vertexai.init(project=PROJECT_ID, location=REGION)
+
+    requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
+    num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
+
+    print(requests_per_minute)
+
     # embedding model initialization
     embeddings = CustomVertexAIEmbeddings(
-        requests_per_minute=EMBEDDING_CONFIG.get("EMBEDDING_QPM"),
-        num_instances_per_batch=EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH"),
+        requests_per_minute=requests_per_minute,
+        num_instances_per_batch=num_instances_per_batch
     )
 
     # generate context
