@@ -89,7 +89,7 @@ def chat_behavior():
 
 
 if __name__ == "__main__":
-    st.write("# GenAI Hachathon 2023 - HI team!")
+    st.write("# GenAI Hachathon 2023 - HI team!!")
     option = st.radio("Select a mode for interaction with HI application:", ('LLM QA', 'Chat'))
 
     if  option == "LLM QA":
