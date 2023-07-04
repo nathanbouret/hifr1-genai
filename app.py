@@ -58,20 +58,21 @@ def run_llm_pipeline(selected_role, user_text_question):
     return answer
 
 
-# def question_answering_behavior(): 
-#     selected_role = st.selectbox(label='Your role', options=roles)
+def question_answering_behavior(): 
+    selected_role = st.selectbox(label='Your role', options=roles)
 
-#     if selected_role and selected_role=='business analyst':
-#         selected_question = st.selectbox(label='Question', options=questions_BA)
-#     elif selected_role and selected_role=='CxO':
-#         selected_question = st.selectbox(label='Question', options=questions_CxO)
-#     elif selected_role and selected_role=='legal dep':
-#         selected_question = st.selectbox(label='Question', options=question_legalDP)
+    if selected_role and selected_role=='business analyst':
+        selected_question = st.selectbox(label='Question', options=questions_BA)
+    elif selected_role and selected_role=='CxO':
+        selected_question = st.selectbox(label='Question', options=questions_CxO)
+    elif selected_role and selected_role=='legal dep':
+        selected_question = st.selectbox(label='Question', options=question_legalDP)
 
-#     submitted_question = st.button(key='question_submit_buttom', label='Submit')
-#     if submitted_question:
-#         answer = run(selected_role, selected_question)
-#         st.write(answer)
+    submitted_question = st.button(key='question_submit_buttom', label='Submit')
+    if submitted_question:
+        # answer = run(selected_role, selected_question)
+        answer = run_llm_pipeline(selected_role, selected_question)
+        st.write(answer)
 
 
 def chat_behavior():
@@ -93,8 +94,7 @@ if __name__ == "__main__":
     option = st.radio("Select a mode for interaction with HI application:", ('LLM QA', 'Chat'))
 
     if  option == "LLM QA":
-        # question_answering_behavior()
-        pass
+        question_answering_behavior()
     elif option == "Chat":
         chat_behavior()
 
