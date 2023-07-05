@@ -35,10 +35,10 @@ from corpus_processor.src.corpus_to_text import read_documents_from_bucket
 def generate_context(user_question, embeddings, vector_store_flag=False):
 
     # document_processor() #DONT RUN THIS FUNCTION / create and run a processor to convert .pdf files to .json files (Document obj) from google bucket data directory
-    read_documents_from_bucket()
-
+    # read_documents_from_bucket()
     vector_store = None
     if not vector_store_flag:
+        read_documents_from_bucket()
         vector_store = doc_to_vector(embeddings, vector_store_method='FAISS')
     else:
         vector_store = load_vector_store_local('vector_store_index', embeddings)
@@ -51,8 +51,8 @@ def generate_context(user_question, embeddings, vector_store_flag=False):
     docs_top_k = get_relevant_documents(retriever, top_k, user_question)
 
     for idx, doc in enumerate(docs_top_k[:top_k]):
-        print(f"========== K:{idx} ==========")
-        print(f"========== {get_source_file(doc.metadata['source'])} ==========")
+        print(f"\n========== K:{idx} ==========")
+        # print(f"========== {get_source_file(doc.metadata['source'])} ==========")
         print(f"{doc.page_content}")
         print(f"=========================================================================")
     # prepare a prompt where top k similar chuncks is a context for the LLM

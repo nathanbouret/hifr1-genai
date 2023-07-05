@@ -20,6 +20,6 @@ __pycache__
 **/log/*
 **/output/*
 **/HIFR1_GENAI.egg-info/*
-
+test.py
 # ignore results files
-
+**/vector_store_index

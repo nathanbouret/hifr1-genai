@@ -20,7 +20,7 @@ from LLM_engine.src.llm import call_llm_answer_Q, call_llm_refine_question, call
 from context_generator.src.context_generator import generate_context
 from main_prompt_creator.src.main_prompt_creator import create_prompt_1
 
-VECTOR_STORE_FLAG = False
+VECTOR_STORE_FLAG = True
 
 EMBEDDING_CONFIG = config.embedding_config()
 requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
@@ -47,6 +47,7 @@ questions_CxO = ['what is key industrial capabilities of the companies?',
                 'what has been the challenges for healthcare companies since 2020?']
 question_legalDP = ['what is ....']
 
+
 def get_conversation_string():
     conversation_string = ""
     for i in range(len(st.session_state['responses'])-1):
@@ -56,7 +57,8 @@ def get_conversation_string():
         print('conversation_string: ', conversation_string)
     return conversation_string
 
-def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag=VECTOR_STORE_FLAG):
+
+def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag):
 
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
@@ -79,7 +81,7 @@ def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag=VEC
     # )
 
     # generate context
-    context = generate_context(user_question=user_text_question, embeddings=embeddings, vector_store_flag=VECTOR_STORE_FLAG)
+    context = generate_context(user_question=user_text_question, embeddings=embeddings, vector_store_flag=vector_store_flag)
 
     # create main prompt
     main_prompt = create_prompt_1(user_question=user_text_question, user_role=selected_role, context=context)
@@ -93,7 +95,7 @@ def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag=VEC
 
     return answer
 
-def run_llm_chat_pipeline(refined_user_question, message_history, vector_store_flag=VECTOR_STORE_FLAG):
+def run_llm_chat_pipeline(refined_user_question, message_history, vector_store_flag):
     
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
@@ -116,7 +118,7 @@ def run_llm_chat_pipeline(refined_user_question, message_history, vector_store_f
     # )
 
     # generate context
-    context = generate_context(user_question=refined_user_question, embeddings=embeddings, vector_store_flag=VECTOR_STORE_FLAG)
+    context = generate_context(user_question=refined_user_question, embeddings=embeddings, vector_store_flag=vector_store_flag)
     
     # call llm chat to answer
     answer = call_llm_chat(
