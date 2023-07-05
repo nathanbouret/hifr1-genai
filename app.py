@@ -63,7 +63,7 @@ def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag):
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
     LLM_CONFIG = config.llm_config()
-    EMBEDDING_CONFIG = config.embedding_config()
+    # EMBEDDING_CONFIG = config.embedding_config()
 
     PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
     REGION = GCP_CONFIG.get('REGION')
@@ -100,7 +100,7 @@ def run_llm_chat_pipeline(refined_user_question, message_history, vector_store_f
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
     CHATLLM_CONFIG = config.chat_llm_config()
-    EMBEDDING_CONFIG = config.embedding_config()
+    # EMBEDDING_CONFIG = config.embedding_config()
 
     PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
     REGION = GCP_CONFIG.get('REGION')

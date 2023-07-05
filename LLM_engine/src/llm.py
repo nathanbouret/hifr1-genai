@@ -32,6 +32,7 @@ from langchain.llms import VertexAI
 from utils.utils import rate_limit
 import config
 
+
 class CustomVertexAIEmbeddings(VertexAIEmbeddings, BaseModel):
     requests_per_minute: int
     num_instances_per_batch: int
@@ -111,8 +112,10 @@ def call_llm_chat(GCP_CONFIG, CHATLLM_CONFIG, user_question, context, message_hi
         "top_k":  CHATLLM_CONFIG['top_k']
     }
 
+    fixed_template=f"""Answer the question as truthfully as possible using the provided [CONTEXT], 
+    and if the answer is not contained within the  [CONTEXT], say 'I don't know.'  [CONTEXT]={context}"""
     # chat = chat_model.start_chat(context=context, message_history=message_history)
-    chat = chat_model.start_chat(context=context)
+    chat = chat_model.start_chat(context=fixed_template)
     answer = chat.send_message(user_question, **parameters)
 
     return answer
