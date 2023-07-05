@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit_chat import message
 import vertexai
+from vertexai.preview.language_models import TextGenerationModel
+from vertexai.preview.language_models import ChatModel
 
 from langchain.chat_models import ChatVertexAI
 from langchain.chains import ConversationChain
@@ -149,6 +151,7 @@ def chat_behavior():
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
     LLM_CONFIG = config.llm_config()
+    CHATLLM_CONFIG = config.chat_llm_config()
 
     st.subheader("Chatbot with ChatVertexAI and Streamlit")
     if 'responses' not in st.session_state:
@@ -160,6 +163,12 @@ def chat_behavior():
         st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
         print('================= st.session_state.buffer_memory ================\n',  st.session_state.buffer_memory)
     
+    system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using the provided context, 
+    and if the answer is not contained within the text below, say 'I don't know'""")
+    human_msg_template = HumanMessagePromptTemplate.from_template(template="{input}")
+    prompt_template = ChatPromptTemplate.from_messages([system_msg_template, MessagesPlaceholder(variable_name="history"), human_msg_template])
+    print('prompt_template: ', prompt_template)
+
     # container for chat history
     response_container = st.container()
     # container for text box
@@ -192,7 +201,11 @@ def chat_behavior():
                     message_history=message_history
                 )
 
-                print(f"Response from Model: {response}")
+                print(f"Response from Model: {response.text}")
+
+            st.session_state.requests.append(user_question)
+            st.session_state.responses.append(response.text) 
+
             print('st.session_state.requests: ', st.session_state.requests)
             print('st.session_state.responses: ', st.session_state.responses)
     with response_container:

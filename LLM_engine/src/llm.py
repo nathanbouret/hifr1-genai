@@ -13,6 +13,12 @@ from langchain.document_loaders import TextLoader
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains import RetrievalQA
+from langchain.prompts import (
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+    ChatPromptTemplate,
+    MessagesPlaceholder
+)
 
 # Vertex AI
 import vertexai
@@ -105,7 +111,8 @@ def call_llm_chat(GCP_CONFIG, CHATLLM_CONFIG, user_question, context, message_hi
         "top_k":  CHATLLM_CONFIG['top_k']
     }
 
-    chat = chat_model.start_chat(context=context, message_history=message_history)
+    # chat = chat_model.start_chat(context=context, message_history=message_history)
+    chat = chat_model.start_chat(context=context)
     answer = chat.send_message(user_question, **parameters)
 
-    return answer.text
+    return answer
