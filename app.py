@@ -20,6 +20,19 @@ from LLM_engine.src.llm import call_llm_answer_Q, call_llm_refine_question, call
 from context_generator.src.context_generator import generate_context
 from main_prompt_creator.src.main_prompt_creator import create_prompt_1
 
+VECTOR_STORE_FLAG = False
+
+EMBEDDING_CONFIG = config.embedding_config()
+requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
+num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
+
+# print(requests_per_minute)
+
+# embedding model initialization
+embeddings = CustomVertexAIEmbeddings(
+    requests_per_minute=requests_per_minute,
+    num_instances_per_batch=num_instances_per_batch
+)
 # 'what was the main goal behind investing in cloud technology?'
 # how can pharmaceutical companies drive value growth?
 
@@ -43,7 +56,7 @@ def get_conversation_string():
         print('conversation_string: ', conversation_string)
     return conversation_string
 
-def run_llm_QA_pipeline(selected_role, user_text_question):
+def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag=VECTOR_STORE_FLAG):
 
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
@@ -54,19 +67,19 @@ def run_llm_QA_pipeline(selected_role, user_text_question):
     REGION = GCP_CONFIG.get('REGION')
     vertexai.init(project=PROJECT_ID, location=REGION)
 
-    requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
-    num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
+    # requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
+    # num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
 
     # print(requests_per_minute)
 
     # embedding model initialization
-    embeddings = CustomVertexAIEmbeddings(
-        requests_per_minute=requests_per_minute,
-        num_instances_per_batch=num_instances_per_batch
-    )
+    # embeddings = CustomVertexAIEmbeddings(
+    #     requests_per_minute=requests_per_minute,
+    #     num_instances_per_batch=num_instances_per_batch
+    # )
 
     # generate context
-    context = generate_context(user_question=user_text_question, embeddings=embeddings)
+    context = generate_context(user_question=user_text_question, embeddings=embeddings, vector_store_flag=VECTOR_STORE_FLAG)
 
     # create main prompt
     main_prompt = create_prompt_1(user_question=user_text_question, user_role=selected_role, context=context)
@@ -80,7 +93,7 @@ def run_llm_QA_pipeline(selected_role, user_text_question):
 
     return answer
 
-def run_llm_chat_pipeline(refined_user_question, message_history):
+def run_llm_chat_pipeline(refined_user_question, message_history, vector_store_flag=VECTOR_STORE_FLAG):
     
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
@@ -91,19 +104,19 @@ def run_llm_chat_pipeline(refined_user_question, message_history):
     REGION = GCP_CONFIG.get('REGION')
     vertexai.init(project=PROJECT_ID, location=REGION)
 
-    requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
-    num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
+    # requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
+    # num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
 
     # print(requests_per_minute)
 
     # embedding model initialization
-    embeddings = CustomVertexAIEmbeddings(
-        requests_per_minute=requests_per_minute,
-        num_instances_per_batch=num_instances_per_batch
-    )
+    # embeddings = CustomVertexAIEmbeddings(
+    #     requests_per_minute=requests_per_minute,
+    #     num_instances_per_batch=num_instances_per_batch
+    # )
 
     # generate context
-    context = generate_context(user_question=refined_user_question, embeddings=embeddings)
+    context = generate_context(user_question=refined_user_question, embeddings=embeddings, vector_store_flag=VECTOR_STORE_FLAG)
     
     # call llm chat to answer
     answer = call_llm_chat(
@@ -129,7 +142,7 @@ def question_answering_behavior():
     submitted_question = st.button(key='question_submit_buttom', label='Submit')
     if submitted_question:
         # answer = run(selected_role, selected_question)
-        answer = run_llm_QA_pipeline(selected_role, selected_question)
+        answer = run_llm_QA_pipeline(selected_role, selected_question, vector_store_flag=VECTOR_STORE_FLAG)
         st.write(answer)
 
 
@@ -198,7 +211,8 @@ def chat_behavior():
                 # call llm_chat pipeline to answer
                 response = run_llm_chat_pipeline( 
                     refined_user_question=refined_user_question, 
-                    message_history=message_history
+                    message_history=message_history,
+                    vector_store_flag=VECTOR_STORE_FLAG
                 )
 
                 print(f"Response from Model: {response.text}")

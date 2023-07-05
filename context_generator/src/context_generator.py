@@ -34,7 +34,7 @@ from corpus_processor.src.corpus_to_text import read_documents_from_bucket
 
 def generate_context(user_question, embeddings, vector_store_flag=False):
 
-    document_processor() #DONT RUN THIS FUNCTION / create and run a processor to convert .pdf files to .json files (Document obj) from google bucket data directory
+    # document_processor() #DONT RUN THIS FUNCTION / create and run a processor to convert .pdf files to .json files (Document obj) from google bucket data directory
     read_documents_from_bucket()
 
     vector_store = None
