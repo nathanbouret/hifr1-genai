@@ -29,16 +29,19 @@ from context_generator.src.sampler import get_relevant_documents
 from utils.utils import get_source_file
 from context_generator.src.vectorizer import load_vector_store_local
 from corpus_processor.src.file_processor import document_processor
-from corpus_processor.src.corpus_to_text import read_documents_from_bucket
+from corpus_processor.src.corpus_to_text import read_documents_from_bucket, read_txt_files_from_bucket
 
 
 def generate_context(user_question, embeddings, vector_store_flag=False):
 
+    #NOTE if you have new pdf file in gcp bucket uncomment two following functions to:
+    # 1. read documents (pdf) with a batch processor from ./pdf/ directory
+    # 2. convert them to text 
+    # 3. save them in gcp bucket ./txt/ directory
     # document_processor() #DONT RUN THIS FUNCTION / create and run a processor to convert .pdf files to .json files (Document obj) from google bucket data directory
     # read_documents_from_bucket()
     vector_store = None
     if not vector_store_flag:
-        read_documents_from_bucket()
         vector_store = doc_to_vector(embeddings, vector_store_method='FAISS')
     else:
         vector_store = load_vector_store_local('vector_store_index', embeddings)
