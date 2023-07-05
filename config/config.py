@@ -6,13 +6,16 @@ def gcp_config():
         'PROJECT_ID' : 'gen-hi-france-genai-force1',
         'PROJECT_NUMBER' : '881178893280',
         'REGION' : 'us-central1',
-        'BUCKET' : 'gs://marzi-bucket',
+        'BUCKET' : 'gs://corpus-fr1-hack',
+        'BUCKET_NAME': 'corpus-fr1-hack',
         'DIMENSIONS' : 768
     }
     return GCP_CONFIG
 
+
 def embedding_config():
     EMBEDDING_CONFIG = {
+        'TEXT_EMBEDDING_MODEL_NAME' : "textembedding-gecko@001",
         'EMBEDDING_QPM' : 100,
         'EMBEDDING_NUM_BATCH' : 5
     }
@@ -38,8 +41,14 @@ def chat_llm_config():
     }
     return CHATLLM_CONFIG
 
-def llm_embedding_config():
-    LLM_EMBEDDING_CONFIG = {
-            'text_embedding_name' : "textembedding-gecko@001"
+
+def document_processor_config():
+    DOCUMENT_PROCESSOR_CONFIG = {
+        'PROCCESOR_LOCATION' : 'us', # An `api_endpoint` must be set if you use a location other than "us".
+        'BUCKET_OUTPUT_URI' : 'gs://corpus-fr1-hack/document_obj/',   # Must end with a trailing slash `/`. Format: gs://bucket/directory/subdirectory/
+        'BUCKET_INPUT_PREFIX': 'gs://corpus-fr1-hack/pdf/',   # Format: gs://bucket/directory/
+        'PROCESSOR_DISPLAY_NAME' : "PDF_TO_TXT_PROCESSOR",  # Must be unique per project, e.g.: "My Processor"
+        'PROCESSOR_TYPE': "OCR_PROCESSOR",
+        'BUCKET_TXT_NAME': 'txt'
     }
-    return LLM_EMBEDDING_CONFIG
+    return DOCUMENT_PROCESSOR_CONFIG

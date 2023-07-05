@@ -13,9 +13,18 @@ from langchain.document_loaders import TextLoader
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains import RetrievalQA
+from langchain.prompts import (
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+    ChatPromptTemplate,
+    MessagesPlaceholder
+)
 
 # Vertex AI
 import vertexai
+from vertexai.preview.language_models import TextGenerationModel
+from vertexai.preview.language_models import ChatModel
+
 from langchain.chat_models import ChatVertexAI
 from langchain.embeddings import VertexAIEmbeddings
 from langchain.llms import VertexAI
@@ -46,7 +55,7 @@ class CustomVertexAIEmbeddings(VertexAIEmbeddings, BaseModel):
 
         return [r.values for r in results]
 
-def call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt):
+def call_llm_answer_Q(GCP_CONFIG, LLM_CONFIG, main_prompt):
 
     PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
     REGION = GCP_CONFIG.get('REGION')
@@ -62,22 +71,48 @@ def call_llm(GCP_CONFIG, LLM_CONFIG, CHATLLM_CONFIG, main_prompt):
         verbose = True,
     )
 
-    # Chat model initialization
-    chat = ChatVertexAI(
-        model_name = CHATLLM_CONFIG['chatllm_name'],
-        max_output_tokens = CHATLLM_CONFIG['max_output_token'],
-        temperature = CHATLLM_CONFIG['temperature'],
-        top_p = CHATLLM_CONFIG['top_p'],
-        top_k = CHATLLM_CONFIG['top_k'],
-        verbose=True,
-    )
-
-    # # embedding model initialization
-    # embeddings = CustomVertexAIEmbeddings(
-    #     requests_per_minute=EMBEDDING_CONFIG.get('EMBEDDING_QPM'),
-    #     num_instances_per_batch=EMBEDDING_CONFIG.get('EMBEDDING_NUM_BATCH'),
-    #     )
-
     answer = llm(main_prompt.format())
-    print(f"LLM Output: {answer}")
+    # print(f"LLM Output: {answer}")
+    return answer
+
+def call_llm_refine_question(GCP_CONFIG, LLM_CONFIG, conversation, user_question):
+    """
+    Method uses llm model to correct and enhance the user question formulation 
+    It takes into consideration the conversation history 
+    """
+    PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
+    REGION = GCP_CONFIG.get('REGION')
+    vertexai.init(project=PROJECT_ID, location=REGION)
+
+    llm_model_to_refine_question = TextGenerationModel.from_pretrained("text-bison@001")
+    
+    answer = llm_model_to_refine_question.predict(
+    max_output_tokens = LLM_CONFIG['max_output_token'],
+    temperature = LLM_CONFIG['temperature'],
+    top_p = LLM_CONFIG['top_p'],
+    top_k = LLM_CONFIG['top_k'],
+    prompt=f"Given the following user query and conversation log, formulate a question that would be the most relevant to provide the user with an answer from a knowledge base.\n\nCONVERSATION LOG: \n{conversation}\n\nQuery: {user_question}\n\nRefined Query:",
+    )
+    return answer.text
+
+def call_llm_chat(GCP_CONFIG, CHATLLM_CONFIG, user_question, context, message_history):
+
+    PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
+    REGION = GCP_CONFIG.get('REGION')
+    vertexai.init(project=PROJECT_ID, location=REGION)
+
+    # Chat model initialization
+    chat_model = ChatModel.from_pretrained(model_name=CHATLLM_CONFIG.get('chatllm_name'))
+
+    parameters = {
+        "temperature": CHATLLM_CONFIG['temperature'],
+        "max_output_tokens": CHATLLM_CONFIG['max_output_token'],
+        "top_p": CHATLLM_CONFIG['top_p'],
+        "top_k":  CHATLLM_CONFIG['top_k']
+    }
+
+    # chat = chat_model.start_chat(context=context, message_history=message_history)
+    chat = chat_model.start_chat(context=context)
+    answer = chat.send_message(user_question, **parameters)
+
     return answer
