@@ -176,7 +176,7 @@ def chat_behavior():
 
     selected_topic = st.selectbox(label='Main topic', options=topics)
 
-    st.subheader("Chatbot with ChatVertexAI and Streamlit")
+    st.subheader("Looking for more insights? Ask ChatCEO...")
     if 'responses' not in st.session_state:
         st.session_state['responses'] = ["How can I assist you?"]
     if 'requests' not in st.session_state:
@@ -220,8 +220,8 @@ def chat_behavior():
                     conversation=conversation_string, 
                     user_question=user_question)
 
-                st.subheader("Refined Query:")
-                st.write(refined_user_question)
+                # st.subheader("Refined Query:")
+                # st.write(refined_user_question)
 
                 # get messages history
                 message_history = st.session_state.requests + st.session_state.responses
@@ -230,7 +230,7 @@ def chat_behavior():
                 # call llm_chat pipeline to answer
                 response = run_llm_chat_pipeline(
                     selected_topic = selected_topic, 
-                    refined_user_question = refined_user_question, 
+                    refined_user_question = user_question, # refined_user_question, 
                     message_history = message_history,
                     vector_store_flag = VECTOR_STORE_FLAG
                 )
@@ -254,8 +254,8 @@ def chat_behavior():
 
 
 if __name__ == "__main__":
-    st.write("# GenAI Hackathon 2023 - HIF1 team!!")
-    option = st.radio("Select a mode for interaction with HI application:", ("Chat", 'LLM QA'))
+    st.write("# ChatCEO")
+    option = st.radio("Choose user experience:", ("Chat", 'LLM QA'))
 
     if  option == "LLM QA":
         question_answering_behavior()
