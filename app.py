@@ -118,8 +118,12 @@ def run_llm_chat_pipeline(selected_topic, refined_user_question, message_history
     #     num_instances_per_batch=num_instances_per_batch
     # )
 
+    weight = int(len(refined_user_question.split(" "))/2)
+
+    context_prompt = refined_user_question + weight*(f" {selected_topic}")
+
     # generate context
-    context = generate_context(user_question = selected_topic, embeddings=embeddings, vector_store_flag=vector_store_flag)
+    context = generate_context(user_question = context_prompt, embeddings=embeddings, vector_store_flag=vector_store_flag)
     
     # call llm chat to answer
     answer = call_llm_chat(
