@@ -1,135 +1,26 @@
-aiohttp==3.8.4
-aiosignal==1.3.1
-altair @ file:///tmp/build/80754af9/altair_1599835197802/work
-asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
-async-timeout==4.0.2
-attrs @ file:///C:/ci_311/attrs_1676422272484/work
-backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
-blinker==1.4
-Bottleneck @ file:///C:/ci_311/bottleneck_1676500016583/work
-brotlipy==0.7.0
-cachetools @ file:///tmp/build/80754af9/cachetools_1619597386817/work
-certifi @ file:///C:/b/abs_4a0polqwty/croot/certifi_1683875377622/work/certifi
-cffi @ file:///C:/ci_311/cffi_1676423759166/work
-charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
-click @ file:///C:/ci_311/click_1676433091657/work
-colorama @ file:///C:/ci_311/colorama_1676422310965/work
-comm @ file:///C:/ci_311/comm_1678376562840/work
-contourpy @ file:///C:/ci_311/contourpy_1676431756017/work
-cryptography @ file:///C:/b/abs_b28tzldafl/croot/cryptography_1686613103834/work
-cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
-dataclasses-json==0.5.9
-debugpy @ file:///C:/ci_311/debugpy_1676426137692/work
-decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
-entrypoints @ file:///C:/ci_311/entrypoints_1676423328987/work
-executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
-faiss-cpu==1.7.4
-fonttools==4.25.0
-frozenlist==1.3.3
-gitdb @ file:///tmp/build/80754af9/gitdb_1617117951232/work
-GitPython @ file:///C:/ci_311/gitpython_1677727002425/work
+google-cloud-aiplatform==1.27.0
+numpy==1.25.0
+pydantic==1.10.8
+streamlit==1.24.0
+cachetools==5.3.1
+certifi==2023.5.7
+charset-normalizer==3.1.0
 google-api-core==2.11.1
 google-auth==2.21.0
-google-cloud-aiplatform==1.27.0
-google-cloud-bigquery==3.11.3
-google-cloud-core==2.3.2
-google-cloud-documentai==2.16.0
-google-cloud-resource-manager==1.10.1
-google-cloud-storage==2.10.0
-google-crc32c==1.5.0
-google-resumable-media==2.5.0
 googleapis-common-protos==1.59.1
-greenlet==2.0.2
-grpc-google-iam-v1==0.12.6
 grpcio==1.56.0
 grpcio-status==1.56.0
-idna @ file:///C:/ci_311/idna_1676424932545/work
-importlib-metadata @ file:///C:/b/abs_20ndzb2j6v/croot/importlib-metadata_1678997085534/work
-ipykernel @ file:///C:/ci_311/ipykernel_1678734799670/work
-ipython @ file:///C:/b/abs_d1yx5tjhli/croot/ipython_1680701887259/work
-ipywidgets @ file:///C:/b/abs_5awapknmz_/croot/ipywidgets_1679394824767/work
-jedi @ file:///C:/ci_311/jedi_1679427407646/work
-Jinja2 @ file:///C:/ci_311/jinja2_1676424968965/work
-jsonschema @ file:///C:/b/abs_d40z05b6r1/croot/jsonschema_1678983446576/work
-jupyter_client @ file:///C:/b/abs_059idvdagk/croot/jupyter_client_1680171872444/work
-jupyter_core @ file:///C:/b/abs_9d0ttho3bs/croot/jupyter_core_1679906581955/work
-jupyterlab-widgets @ file:///C:/b/abs_38ad427jkz/croot/jupyterlab_widgets_1679055289211/work
-kiwisolver @ file:///C:/ci_311/kiwisolver_1676431979301/work
-langchain==0.0.222
-langchainplus-sdk==0.0.19
-markdown-it-py @ file:///C:/b/abs_a5bfngz6fu/croot/markdown-it-py_1684279915556/work
-MarkupSafe @ file:///C:/ci_311/markupsafe_1676424152318/work
-marshmallow==3.19.0
-marshmallow-enum==1.5.1
-matplotlib @ file:///C:/b/abs_49b2acwxd4/croot/matplotlib-suite_1679593486357/work
-matplotlib-inline @ file:///C:/ci_311/matplotlib-inline_1676425798036/work
-mdurl @ file:///C:/ci_311/mdurl_1676442676678/work
-mkl-fft==1.3.6
-mkl-random @ file:///C:/Users/dev-admin/mkl/mkl_random_1682977971003/work
-mkl-service==2.4.0
-multidict==6.0.4
-munkres==1.1.4
-mypy-extensions==1.0.0
-neo4j==5.10.0
-nest-asyncio @ file:///C:/ci_311/nest-asyncio_1676423519896/work
-numexpr @ file:///C:/b/abs_afm0oewmmt/croot/numexpr_1683221839116/work
-numpy @ file:///C:/b/abs_5akk51tu0f/croot/numpy_and_numpy_base_1687466253743/work
-openapi-schema-pydantic==1.2.4
-packaging @ file:///C:/b/abs_ed_kb9w6g4/croot/packaging_1678965418855/work
-pandas @ file:///C:/ci_311_rebuilds/pandas_1679004481142/work
-parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
-pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
-Pillow==9.4.0
-platformdirs @ file:///C:/ci_311/platformdirs_1676422658103/work
-prompt-toolkit @ file:///C:/ci_311/prompt-toolkit_1676425940920/work
+pypdf==3.12.0
+pycryptodome==3.18.0
+idna==3.4
 proto-plus==1.22.3
-protobuf==3.20.3
-psutil @ file:///C:/ci_311_rebuilds/psutil_1679005906571/work
-pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
-pyarrow==11.0.0
+protobuf==4.23.3
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
-pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
-pycryptodome==3.18.0
-pydantic @ file:///C:/b/abs_4bum6ajkso/croot/pydantic_1686125732638/work
-pydeck @ file:///C:/ci_311/pydeck_1678294245657/work
-Pygments @ file:///C:/b/abs_fay9dpq4n_/croot/pygments_1684279990574/work
-Pympler @ file:///tmp/build/80754af9/pympler_1602785470644/work
-pyOpenSSL @ file:///C:/b/abs_de215ipd18/croot/pyopenssl_1678965319166/work
-pyparsing @ file:///C:/ci_311/pyparsing_1678502182533/work
-pypdf==3.12.0
-pyrsistent @ file:///C:/ci_311/pyrsistent_1676422695500/work
-PySocks @ file:///C:/ci_311/pysocks_1676425991111/work
-python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
-pytz @ file:///C:/ci_311/pytz_1676427070848/work
-pywin32==305.1
-PyYAML @ file:///C:/ci_311/pyyaml_1676432488822/work
-pyzmq @ file:///C:/b/abs_655zk4a3s8/croot/pyzmq_1686601465034/work
-requests @ file:///C:/b/abs_41owkd5ymz/croot/requests_1682607524657/work
-rich @ file:///C:/b/abs_09j2g5qnu8/croot/rich_1684282185530/work
+requests==2.31.0
 rsa==4.9
-seaborn @ file:///C:/ci_311/seaborn_1676446547861/work
-semver @ file:///tmp/build/80754af9/semver_1603822362442/work
-Shapely==1.8.5.post1
-six @ file:///tmp/build/80754af9/six_1644875935023/work
-smmap @ file:///tmp/build/80754af9/smmap_1611694433573/work
-SQLAlchemy==2.0.17
-stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
-streamlit==1.24.0
+six==1.16.0
+urllib3==1.26.16
+google-cloud-documentai==2.16.0
 streamlit-chat==0.1.1
-tenacity==8.2.2
-toml @ file:///tmp/build/80754af9/toml_1616166611790/work
-toolz @ file:///C:/ci_311/toolz_1676431406517/work
-tornado @ file:///C:/ci_311/tornado_1676423689414/work
-traitlets @ file:///C:/ci_311/traitlets_1676423290727/work
-typing-inspect==0.9.0
-typing_extensions @ file:///C:/b/abs_5em9ekwz24/croot/typing_extensions_1686602003259/work
-tzlocal @ file:///C:/ci_311/tzlocal_1676439620276/work
-urllib3 @ file:///C:/b/abs_889_loyqv4/croot/urllib3_1686163174463/work
-validators @ file:///tmp/build/80754af9/validators_1612286467315/work
-watchdog @ file:///C:/ci_311/watchdog_1676457923624/work
-wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
-widgetsnbextension @ file:///C:/b/abs_882k4_4kdf/croot/widgetsnbextension_1679313880295/work
-win-inet-pton @ file:///C:/ci_311/win_inet_pton_1676425458225/work
-yarl==1.9.2
-zipp @ file:///C:/ci_311/zipp_1676426100491/work
+langchain==0.0.222
