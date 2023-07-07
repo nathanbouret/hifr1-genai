@@ -20,16 +20,19 @@ from LLM_engine.src.llm import call_llm_answer_Q, call_llm_refine_question, call
 from context_generator.src.context_generator import generate_context
 from main_prompt_creator.src.main_prompt_creator import create_prompt_1
 
-VECTOR_STORE_FLAG = True
+VECTOR_STORE_FLAG = False
 
 EMBEDDING_CONFIG = config.embedding_config()
 requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
 num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
+embedding_model_name =    EMBEDDING_CONFIG.get('TEXT_EMBEDDING_MODEL_NAME')
+
 
 # print(requests_per_minute)
 
 # embedding model initialization
 embeddings = CustomVertexAIEmbeddings(
+    model_name = embedding_model_name,
     requests_per_minute=requests_per_minute,
     num_instances_per_batch=num_instances_per_batch
 )
@@ -46,6 +49,9 @@ questions_CxO = ['what is key industrial capabilities of the companies?',
                 'where pharmaceuticals companies have been invested recently?',
                 'what has been the challenges for healthcare companies since 2020?']
 question_legalDP = ['what is ....']
+
+
+# classes_poi = ["challenge", "priority", "investment", "achievement", "success", "innovation", "skill", "best practice", "ressource"]
 
 
 def get_conversation_string():

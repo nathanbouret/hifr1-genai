@@ -1,4 +1,5 @@
 
+do_zero_shot_classification = False
 
 def gcp_config():
     GCP_CONFIG = {
@@ -52,3 +53,4 @@ def document_processor_config():
         'BUCKET_TXT_NAME': 'txt'
     }
     return DOCUMENT_PROCESSOR_CONFIG
+
