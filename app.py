@@ -20,19 +20,16 @@ from LLM_engine.src.llm import call_llm_answer_Q, call_llm_refine_question, call
 from context_generator.src.context_generator import generate_context
 from main_prompt_creator.src.main_prompt_creator import create_prompt_1
 
-VECTOR_STORE_FLAG = False
+VECTOR_STORE_FLAG = True
 
 EMBEDDING_CONFIG = config.embedding_config()
 requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
 num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
-embedding_model_name =    EMBEDDING_CONFIG.get('TEXT_EMBEDDING_MODEL_NAME')
-
 
 # print(requests_per_minute)
 
 # embedding model initialization
 embeddings = CustomVertexAIEmbeddings(
-    model_name = embedding_model_name,
     requests_per_minute=requests_per_minute,
     num_instances_per_batch=num_instances_per_batch
 )
@@ -50,9 +47,7 @@ questions_CxO = ['what is key industrial capabilities of the companies?',
                 'what has been the challenges for healthcare companies since 2020?']
 question_legalDP = ['what is ....']
 
-
-# classes_poi = ["challenge", "priority", "investment", "achievement", "success", "innovation", "skill", "best practice", "ressource"]
-
+topics = ['Innovation','Business','Insights','Challenges']
 
 def get_conversation_string():
     conversation_string = ""
@@ -101,7 +96,7 @@ def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag):
 
     return answer
 
-def run_llm_chat_pipeline(refined_user_question, message_history, vector_store_flag):
+def run_llm_chat_pipeline(selected_topic, refined_user_question, message_history, vector_store_flag):
     
     # get configuration infos
     GCP_CONFIG = config.gcp_config()
@@ -124,7 +119,7 @@ def run_llm_chat_pipeline(refined_user_question, message_history, vector_store_f
     # )
 
     # generate context
-    context = generate_context(user_question=refined_user_question, embeddings=embeddings, vector_store_flag=vector_store_flag)
+    context = generate_context(user_question = selected_topic, embeddings=embeddings, vector_store_flag=vector_store_flag)
     
     # call llm chat to answer
     answer = call_llm_chat(
@@ -174,6 +169,9 @@ def chat_behavior():
     LLM_CONFIG = config.llm_config()
     CHATLLM_CONFIG = config.chat_llm_config()
 
+
+    selected_topic = st.selectbox(label='Main topic', options=topics)
+
     st.subheader("Chatbot with ChatVertexAI and Streamlit")
     if 'responses' not in st.session_state:
         st.session_state['responses'] = ["How can I assist you?"]
@@ -184,10 +182,19 @@ def chat_behavior():
         st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
         print('================= st.session_state.buffer_memory ================\n',  st.session_state.buffer_memory)
     
-    system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using the provided context, 
-    and if the answer is not contained within the text below, say 'I don't know'""")
+    # system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using the provided context, 
+    # and if the answer is not contained within the text below, say 'I don't know'""")
+
+    # topic_msg_template = SystemMessagePromptTemplate.from_template(template= selected_topic)
+
     human_msg_template = HumanMessagePromptTemplate.from_template(template="{input}")
-    prompt_template = ChatPromptTemplate.from_messages([system_msg_template, MessagesPlaceholder(variable_name="history"), human_msg_template])
+
+    prompt_template = ChatPromptTemplate.from_messages(
+        [
+        #system_msg_template, 
+        MessagesPlaceholder(variable_name="history"), 
+        human_msg_template])
+    
     print('prompt_template: ', prompt_template)
 
     # container for chat history
@@ -217,10 +224,11 @@ def chat_behavior():
                 print('message_history: ', message_history)
 
                 # call llm_chat pipeline to answer
-                response = run_llm_chat_pipeline( 
-                    refined_user_question=refined_user_question, 
-                    message_history=message_history,
-                    vector_store_flag=VECTOR_STORE_FLAG
+                response = run_llm_chat_pipeline(
+                    selected_topic = selected_topic, 
+                    refined_user_question = refined_user_question, 
+                    message_history = message_history,
+                    vector_store_flag = VECTOR_STORE_FLAG
                 )
 
                 print(f"Response from Model: {response.text}")
@@ -242,8 +250,8 @@ def chat_behavior():
 
 
 if __name__ == "__main__":
-    st.write("# GenAI Hachathon 2023 - HI team!!")
-    option = st.radio("Select a mode for interaction with HI application:", ('LLM QA', 'Chat'))
+    st.write("# GenAI Hackathon 2023 - HIF1 team!!")
+    option = st.radio("Select a mode for interaction with HI application:", ("Chat", 'LLM QA'))
 
     if  option == "LLM QA":
         question_answering_behavior()
