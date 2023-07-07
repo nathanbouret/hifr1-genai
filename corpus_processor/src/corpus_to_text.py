@@ -8,7 +8,7 @@ from google.cloud import documentai
 from google.api_core.client_options import ClientOptions
 from langchain.document_loaders import DirectoryLoader
 from langchain.document_loaders import TextLoader
-from langchain.document_loaders import PyPDFLoader
+from langchain.document_loaders import PDFMinerLoader
 from langchain.docstore.document import Document
 # from langchain.document_loaders import GCSDirectoryLoader, GCSFileLoader  
 # from google.cloud import documentai  # type: ignore  # import error to be fixed  
@@ -32,7 +32,7 @@ def read_documents_from_local(data_dir, read_from):
         print(f'# of .txt documents: {len(documents)}')
         # print(f'content of the first document:\n{documents[0].page_content[0:100]}...\n')
     if read_from == 'pdf':
-        loader = DirectoryLoader(data_dir, glob="./*.pdf", loader_cls=PyPDFLoader)
+        loader = DirectoryLoader(data_dir, glob="./*.pdf", loader_cls=PDFMinerLoader)
         documents = loader.load()
         print(f'# of pages in .pdf documents: {len(documents)}')
         # print(f'content of the first document:\n{documents[0].page_content[0:100]}...\n')
@@ -89,6 +89,66 @@ def read_documents_from_bucket():
     upload_txt(storage_client, bucket_name, bucket_txt_name, org_file_name, txt)
 
 
+def read_documents_from_bucket_paragraph_wise():
+    # Get List of Document Objects from the Output Bucket
+    last_file_number = 0
+    documents = []
+    storage_client = storage.Client(project=project_name)
+    output_blobs = storage_client.list_blobs(bucket_name, prefix=prefix)
+    dic = {}
+    for blob in output_blobs:
+        print(blob.name)
+        # Document AI may output multiple JSON files per source file
+        if blob.content_type != "application/json":
+            print(
+                f"Skipping non-supported file: {blob.name} - Mimetype: {blob.content_type}"
+            )
+            continue
+        path_parts = blob.name.split('/')
+        if int(path_parts[2]) != last_file_number:
+            txt = ''
+            last_file_number = int(path_parts[2])
+            max_key = max(dic.keys())
+            for i in range(0, max_key+1):
+                txt = txt + '\n' + dic[i]
+            upload_txt(storage_client, bucket_name, bucket_txt_name, org_file_name, txt)
+            dic = {}
+        # Download JSON File as bytes object and convert to Document Object
+        print(f"Fetching {blob.name}")
+        document = documentai.Document.from_json(
+            blob.download_as_bytes(), ignore_unknown_fields=True
+        )
+        org_file_name = Path(blob.name).stem
+        chunk_num = int(org_file_name.split('-')[-1])
+        org_file_name = org_file_name.split('-')[:-1]
+        org_file_name = '-'.join(org_file_name)
+        dic[chunk_num] = get_paragraphs(document=document)
+        # txt = txt + '\n' + document.text
+        documents.append(document)
+
+    max_key = max(dic.keys())
+    txt = ''
+    for i in range(0, max_key+1):
+        txt = txt + '\n' + dic[i]
+    upload_txt(storage_client, bucket_name, bucket_txt_name, org_file_name, txt)
+
+    return documents
+
+
+def get_paragraphs(document):
+    all_paragraphs_text = ''
+    text = document.text
+    for page in document.pages:
+        print(f"Page: {page.page_number}")
+        paragraphs = page.paragraphs
+        for i in range(len(paragraphs)):
+            print(f"paragraph num: {i}")
+            paragraph_text = layout_to_text(paragraphs[i].layout, text)
+            all_paragraphs_text = all_paragraphs_text + '*PARAGRAPH_INDICATOR*' + paragraph_text
+
+    return all_paragraphs_text
+
+
 def upload_txt(storage_client, bucket_name, bucket_txt_name, org_file_name, txt):
     # upload text format of a document into the google bucket
     bucket = storage_client.get_bucket(bucket_name)
@@ -112,7 +172,35 @@ def read_txt_files_from_bucket():
         documents.append(new_doc)
     return documents
 
-############################################################################################
+######################################################################
+######### new functions to read text as separated paragraphs #########
+######################################################################
+from typing import Sequence
+def print_paragraphs(
+    paragraphs: Sequence[documentai.Document.Page.Paragraph], text: str
+) -> None:
+    print(f"    {len(paragraphs)} paragraphs detected:")
+    first_paragraph_text = layout_to_text(paragraphs[0].layout, text)
+    print(f"        First paragraph text: {repr(first_paragraph_text)}")
+    last_paragraph_text = layout_to_text(paragraphs[-1].layout, text)
+    print(f"        Last paragraph text: {repr(last_paragraph_text)}")
+
+
+def layout_to_text(layout: documentai.Document.Page.Layout, text: str) -> str:
+    """
+    Document AI identifies text in different parts of the document by their
+    offsets in the entirety of the document"s text. This function converts
+    offsets to a string.
+    """
+    response = ""
+    # If a text segment spans several lines, it will
+    # be stored in different text segments.
+    for segment in layout.text_anchor.text_segments:
+        start_index = int(segment.start_index)
+        end_index = int(segment.end_index)
+        response += text[start_index:end_index]
+    return response
+
 
 
 #project_id = "gen-hi-france-genai-force1"

@@ -46,14 +46,14 @@ def generate_context(user_question, embeddings, vector_store_flag=False):
     else:
         vector_store = load_vector_store_local('vector_store_index', embeddings)
 
+    top_k = 30
     # vector_store = doc_to_vector(embeddings, doc_type='txt', vector_store_name='FAISS')
-    retriever = get_vectorstore_retriever(vector_store)
+    retriever = get_vectorstore_retriever(vector_store, top_k)
 
     # find top k similar chuncks of the documents to user input query
-    top_k = 4
-    docs_top_k = get_relevant_documents(retriever, top_k, user_question)
+    docs_top_k = get_relevant_documents(retriever, user_question)
 
-    for idx, doc in enumerate(docs_top_k[:top_k]):
+    for idx, doc in enumerate(docs_top_k):
         print(f"\n========== K:{idx} ==========")
         # print(f"========== {get_source_file(doc.metadata['source'])} ==========")
         print(f"{doc.page_content}")
