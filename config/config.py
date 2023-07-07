@@ -35,8 +35,8 @@ def llm_config():
 def chat_llm_config():
     CHATLLM_CONFIG = {
             'chatllm_name': 'chat-bison@001',
-            'max_output_token' : 512,
-            'temperature' : 0,
+            'max_output_token' : 1024,
+            'temperature' : 0.2,
             'top_p' : 0.95,
             'top_k' : 40
     }

@@ -52,7 +52,7 @@ def load_vector_store_local(vector_store_path, embedding_model):
     return vector_store
 
 
-def get_vectorstore_retriever(vector_store):
+def get_vectorstore_retriever(vector_store, top_k):
     # Init your retriever. Asking for just 1 document back
-    retriever = vector_store.as_retriever()
+    retriever = vector_store.as_retriever(search_kwargs={"k": top_k})
     return retriever
