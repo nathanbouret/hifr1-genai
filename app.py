@@ -37,14 +37,15 @@ embeddings = CustomVertexAIEmbeddings(
 # how can pharmaceutical companies drive value growth?
 
 roles = ['business analyst', 'CxO', 'legal dep']
-questions_BA = ['who is the leading life science company recently?',
-                'how much are the incomes of companies in life science companies?'
+questions_BA = ['which companies are leaders in the life science industry recently?',
+                'how much are the incomes of Merck company in 2022?'
                 ]
-questions_CxO = ['what is key industrial capabilities of the companies?',
-                 'how can pharmaceutical companies drive value growth?',
-                'where healthcare companies have been invested recently?',
-                'where pharmaceuticals companies have been invested recently?',
-                'what has been the challenges for healthcare companies since 2020?']
+questions_CxO = ['how can pharmaceutical companies drive value growth?',
+                'where healthcare companies have invested more recently?',
+                'where pharmaceuticals companies invest?',
+                'what have been the most challenges for healthcare companies since 2020?',
+                'what are the key industrial capabilities of pharmaceutical companies?',
+                ]
 question_legalDP = ['what is ....']
 
 topics = ['Innovation','Business','Insights','Challenges']
