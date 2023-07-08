@@ -1,8 +1,7 @@
 # HIFR1-GenAI Project
-
 # ChatCxO  
-## Who needs strategy consultants when you’ve got ChatCxO.   
-## CxO Trend Analysis for Business 
+- Who needs strategy consultants when you’ve got ChatCxO.   
+- CxO Trend Analysis for Business 
 
 
 ## About this project
