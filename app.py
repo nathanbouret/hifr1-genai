@@ -20,7 +20,8 @@ from LLM_engine.src.llm import call_llm_answer_Q, call_llm_refine_question, call
 from context_generator.src.context_generator import generate_context
 from main_prompt_creator.src.main_prompt_creator import create_prompt_1
 
-VECTOR_STORE_FLAG = True
+# VECTOR_STORE_FLAG = True
+VECTOR_STORE_FLAG = config.vector_store_flag
 
 EMBEDDING_CONFIG = config.embedding_config()
 requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")

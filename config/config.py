@@ -1,5 +1,6 @@
 
 do_zero_shot_classification = False
+vector_store_flag = True
 
 def gcp_config():
     GCP_CONFIG = {
