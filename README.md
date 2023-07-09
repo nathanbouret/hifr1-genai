@@ -1,41 +1,65 @@
-# HIFR1-GenAI Project
-# ChatCxO  
-- CxO Trend Analysis for Business 
-- Who needs strategy consultants when you’ve got ChatCxO.   
+# ChatCEO Project  
 
+## About this project  
+Life Science – CxO Trend Analysis for Busines.  
+Who needs strategy consultants when you’ve got ChatCEO.    
 
-## About this project
+### Problem Statement and Target Users  
 
-Companies spend millions of dollars trying to beat their competition by anticipating and maturing on innovative solutions. Those ideas usually do not come by themselves. Most companies use consultant firms in order to gain useful insights into the new business opportunities and trends (provide source), and if they don’t, or their services are not accurate, they risk on losing many opportunities. 
+Companies spend millions of dollars trying to beat their competition by anticipating and maturing on innovative solutions. Those ideas usually do not come by themselves. Most companies use consultant firms in order to gain useful insights into the new business opportunities and trends (provide source), and if they don’t, or their services are not accurate, they risk on losing many opportunities. Those solutions are costly, and not easily available, at least not at THE CLICK of a button. This is where our solution fits in. It is the ideal solution for the busy CEO who just needs quick insights to make quick and informed decision, for the people in the legal department who need to keep up with the inevitable frequent changes in legislations, for the business analyst who hasn’t finished his slide deck and has to get quick bullet points in a rush. This is ChatCeo.  
 
-Those solutions are costly, and not easily available, at least not at THE CLICK of a button. 
+### Solution and Technical Components    
 
-This is where our solution fits in. It is the ideal solution for the busy CEO who just needs quick insights to make quick and informed decision, for the people in the legal department who need to keep up with the inevitable frequent changes in legislations, for the business analyst who hasn’t finished his slide deck and has to get quick bullet points in a rush.  
+Our solution is a LLM chat solution. We want the user to be able to either quickly have access to predefined prompts or be able to communicate directly with the engine. We want the user to have a quick and easy experience. To do so, we have created two different user experiences.  
+The first one is straight forward for the user. Depending on his profile, a couple different prompts are predefined and are directly given to them so they can get results within seconds without having to think about the prompt they want. The question we have defined are based on surveys we have collected from CxOs, and what we anticipate they might want and require out of such an app.  
+The second option allows the user, whatever their profile might be, to directly interact with the engine through a chatbot experience. With this chatbot, the user can directly ask whatever question they might have, and the model will only respond based on the corpus that we have provided it with. This last feature is what really differentiates our model from our competition.  
+On the backend of things, our solution runs on the Google Cloud Platform.  
 
-This is ChatCxO. 
+## Environment Setup   
 
-
-## How to take advantage Generative AI ?
-
-How to leverage Generative AI and Large Language Models (LLMs) techniques to leverage the knowledge of corpus and extract information we want. Using Generative AI to beat competitors. Trends are constantly appearing in research and industrialisation pipelines. Being an early actor means gaining an advantage in going to market and is good for finances, reputation.  Trends generally do not appear out of nowhere. With Generative AI, we are hoping to use machine learning algorithms to generate new trends from patterns found in our corpus. By analyzing vast amounts of data and documents, GenAI systems can automatically generate comprehensive trend reports, analysis summaries, and insightful correspondences. This empowers organizations to quickly identify emerging patterns, market shifts, and customer preferences, enabling them to make data-driven decisions and stay ahead of the competition. The application of generative AI in trend analysis not only saves time and effort but also ensures accuracy and consistency in capturing and interpreting trends. Ultimately, genAI offers the potential to revolutionize trend analysis, making it more efficient, scalable, and impactful for businesses across various industries.   
-
-
-## Environment Setup  
-
-1/ Create a virtual environnement:  
+1/ Create a virtual environnement:   
 example with conda:  
-
-    $ conda create --name myenv 
-
-    $ conda activate myenv
+    $ conda create --name myenv  
 
 2/ Navigate to the project root folder:  
-
     $ cd ../HIFR1-GenAI  
 
+3/ 
+Option 1:    
+Run installation command:  
+    $ pip install .  
+The command will use setup.py file to prepare the environnement and install all required packages  
+*** pip environment solver may not be able to install all the packages. In this case, we recommend to follow the second option.  
 
-3/ Run installation command:  
+Option 2:  
+Run installation command:  
+    $ pip install -r requirements.txt  
 
-    $ pip install -r requirements.txt 
-    
-The command will use requirements.txt file to prepare the environnement and install all required packages  
+and then complete installation using :  
+    $ conda install missing_package==version  
+Note that the order of packages installation should be respected as mentionned in the setup.py file.   
+
+## Launch the ChatCEO App  
+
+To launch the app, follow these two simple steps:  
+
+1/ Navigate to the project root folder:   
+    $ cd ../HIFR1-GenAI  
+
+2/ Run launch command:  
+    $ streamlit run app.py  
+
+You can now view the app in your default browser.  
+Local URL: http://localhost:8501  
+
+## Update the corpus  
+
+In default mode, the app uses a local vector store containing preprocessed data from the corpus.  
+In order to add new documents into the corpus, you need to do the following steps:  
+1- Load the new document into your gcp bucket  
+2- Update the config.py file ("gcp_config()" method) with your custom gcp config information.   
+3- In config.py file, set "vector_store_flag" to "False".  
+4- Run the app as described above.    
+Due to the preprocessing step, the app may take a few minutes to run.   
+5- The steps 1, 2, 3, 4 are needed when add a new document into the corpus and they should be executed once.  
+To return to the default running mode, You need to "Stop" the app -> set "vector_store_flag" to "True" in config.py file -> Launch the app again.   

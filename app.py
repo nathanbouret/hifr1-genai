@@ -20,7 +20,8 @@ from LLM_engine.src.llm import call_llm_answer_Q, call_llm_refine_question, call
 from context_generator.src.context_generator import generate_context
 from main_prompt_creator.src.main_prompt_creator import create_prompt_1
 
-VECTOR_STORE_FLAG = True
+# VECTOR_STORE_FLAG = True
+VECTOR_STORE_FLAG = config.vector_store_flag
 
 EMBEDDING_CONFIG = config.embedding_config()
 requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
@@ -37,14 +38,15 @@ embeddings = CustomVertexAIEmbeddings(
 # how can pharmaceutical companies drive value growth?
 
 roles = ['business analyst', 'CxO', 'legal dep']
-questions_BA = ['who is the leading life science company recently?',
-                'how much are the incomes of companies in life science companies?'
+questions_BA = ['which companies are leaders in the life science industry recently?',
+                'how much are the incomes of Merck company in 2022?'
                 ]
-questions_CxO = ['what is key industrial capabilities of the companies?',
-                 'how can pharmaceutical companies drive value growth?',
-                'where healthcare companies have been invested recently?',
-                'where pharmaceuticals companies have been invested recently?',
-                'what has been the challenges for healthcare companies since 2020?']
+questions_CxO = ['how can pharmaceutical companies drive value growth?',
+                'where healthcare companies have invested more recently?',
+                'where pharmaceuticals companies invest?',
+                'what have been the most challenges for healthcare companies since 2020?',
+                'what are the key industrial capabilities of pharmaceutical companies?',
+                ]
 question_legalDP = ['what is ....']
 
 topics = ['Innovation','Business','Insights','Challenges']
@@ -69,17 +71,6 @@ def run_llm_QA_pipeline(selected_role, user_text_question, vector_store_flag):
     PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
     REGION = GCP_CONFIG.get('REGION')
     vertexai.init(project=PROJECT_ID, location=REGION)
-
-    # requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
-    # num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
-
-    # print(requests_per_minute)
-
-    # embedding model initialization
-    # embeddings = CustomVertexAIEmbeddings(
-    #     requests_per_minute=requests_per_minute,
-    #     num_instances_per_batch=num_instances_per_batch
-    # )
 
     # generate context
     context = generate_context(user_question=user_text_question, embeddings=embeddings, vector_store_flag=vector_store_flag)
@@ -106,17 +97,6 @@ def run_llm_chat_pipeline(selected_topic, refined_user_question, message_history
     PROJECT_ID = GCP_CONFIG.get('PROJECT_ID')
     REGION = GCP_CONFIG.get('REGION')
     vertexai.init(project=PROJECT_ID, location=REGION)
-
-    # requests_per_minute = EMBEDDING_CONFIG.get("EMBEDDING_QPM")
-    # num_instances_per_batch = EMBEDDING_CONFIG.get("EMBEDDING_NUM_BATCH")
-
-    # print(requests_per_minute)
-
-    # embedding model initialization
-    # embeddings = CustomVertexAIEmbeddings(
-    #     requests_per_minute=requests_per_minute,
-    #     num_instances_per_batch=num_instances_per_batch
-    # )
 
     weight = int(len(refined_user_question.split(" "))/2)
 
@@ -166,6 +146,28 @@ def question_answering_behavior():
 #         # for source in answer["source_documents"]:
 #         #     st.write(source.metadata['source'])
 
+def on_topic_selector_changed():
+    selected_option = st.session_state['topic_selector']
+    print("========> ",selected_option)
+    del st.session_state['requests']
+    del st.session_state['responses']
+    st.session_state['input'] = ''
+    st.session_state['query_text'] = ''
+
+def user_experience_changed():
+    selected_option = st.session_state['user_experience_option']
+    print("========> ",selected_option)
+    st.session_state['query_text'] = ''
+    if selected_option == 'Chat':
+        print("Chat...........")
+    else:
+        del st.session_state['requests']
+        del st.session_state['responses']
+        st.session_state['input'] = ''
+
+def submit():
+    st.session_state['query_text'] = st.session_state['input']
+    st.session_state['input'] = ''
 
 def chat_behavior():
     # get configuration infos
@@ -173,8 +175,7 @@ def chat_behavior():
     LLM_CONFIG = config.llm_config()
     CHATLLM_CONFIG = config.chat_llm_config()
 
-
-    selected_topic = st.selectbox(label='Main topic', options=topics)
+    selected_topic = st.selectbox(label='Main topic', options=topics, key='topic_selector', on_change=on_topic_selector_changed)
 
     st.subheader("Looking for more insights? Ask ChatCEO...")
     if 'responses' not in st.session_state:
@@ -186,6 +187,9 @@ def chat_behavior():
         st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
         print('================= st.session_state.buffer_memory ================\n',  st.session_state.buffer_memory)
     
+    if 'query_text' not in st.session_state:
+        st.session_state['query_text'] = ''
+
     # system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using the provided context, 
     # and if the answer is not contained within the text below, say 'I don't know'""")
 
@@ -207,7 +211,8 @@ def chat_behavior():
     textcontainer = st.container()
 
     with textcontainer:
-        user_question = st.text_input("Query: ", key="input")
+        st.text_input("Query: ", key="input", on_change=submit)
+        user_question = st.session_state['query_text'] 
         if user_question:
             with st.spinner("typing..."):
                 # conversation history
@@ -225,7 +230,9 @@ def chat_behavior():
 
                 # get messages history
                 message_history = st.session_state.requests + st.session_state.responses
-                print('message_history: ', message_history)
+                # print('message_history: ', message_history)
+
+                # prompt = f"Answer: {user_question}. If you do not understand answer this instead: {refined_user_question}"
 
                 # call llm_chat pipeline to answer
                 response = run_llm_chat_pipeline(
@@ -244,25 +251,19 @@ def chat_behavior():
             print('st.session_state.responses: ', st.session_state.responses)
     with response_container:
         if st.session_state['responses']:
-            # print('1: ', st.session_state['responses'])
             for i in range(len(st.session_state['responses'])):
                 print('*********************')
                 print('2: ', st.session_state['responses'])
                 message(st.session_state['responses'][i], key=str(i))
                 if i < len(st.session_state['requests']):
                     message(st.session_state["requests"][i], is_user=True,key=str(i)+ '_user')
-
+    st.session_state['query_text'] = ''
 
 if __name__ == "__main__":
     st.write("# ChatCEO")
-    option = st.radio("Choose user experience:", ("Chat", 'LLM QA'))
+    option = st.radio("Choose user experience:", ("Chat", 'LLM QA'), key='user_experience_option', on_change=user_experience_changed)
 
     if  option == "LLM QA":
         question_answering_behavior()
     elif option == "Chat":
         chat_behavior()
-
-
-
-
-
