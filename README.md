@@ -15,7 +15,7 @@ The first one is straight forward for the user. Depending on his profile, a coup
 The second option allows the user, whatever their profile might be, to directly interact with the engine through a chatbot experience. With this chatbot, the user can directly ask whatever question they might have, and the model will only respond based on the corpus that we have provided it with. This last feature is what really differentiates our model from our competition.  
  
 ## Prerequisite
-1- On the backend side, ChatCEO solution runs on the Google Cloud Platform. As a prerequisite, you need to setup a gcp project and get the following informations:    
+1- On the backend side, ChatCEO solution calls models from VertexAI Google Cloud Platform & the corpus data is hosted in a dedicated Google 'BUCKET'. As a prerequisite to use the app, you need to setup a gcp project and prepare the following informations:    
 'PROJECT_NAME':  
 'PROJECT_ID' :  
 'PROJECT_NUMBER'  
