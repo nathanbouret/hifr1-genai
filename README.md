@@ -1,7 +1,7 @@
 # ChatCEO Project  
 
 ## About this project  
-Life Science – CxO Trend Analysis for Busines.  
+Life Science – CxO Trend Analysis for Business.  
 Who needs strategy consultants when you’ve got ChatCEO.    
 
 ### Problem Statement and Target Users  
@@ -14,6 +14,7 @@ Our solution is a LLM chat solution. We want the user to be able to either quick
 The first one is straight forward for the user. Depending on his profile, a couple different prompts are predefined and are directly given to them so they can get results within seconds without having to think about the prompt they want. The question we have defined are based on surveys we have collected from CxOs, and what we anticipate they might want and require out of such an app.  
 The second option allows the user, whatever their profile might be, to directly interact with the engine through a chatbot experience. With this chatbot, the user can directly ask whatever question they might have, and the model will only respond based on the corpus that we have provided it with. This last feature is what really differentiates our model from our competition.  
 On the backend of things, our solution runs on the Google Cloud Platform.  
+
 
 ## Environment Setup   
 
@@ -52,7 +53,7 @@ To launch the app, follow these two simple steps:
 You can now view the app in your default browser.  
 Local URL: http://localhost:8501  
 
-## Update the corpus  
+## Update the corpus data
 
 In default mode, the app uses a local vector store containing preprocessed data from the corpus.  
 In order to add new documents into the corpus, you need to do the following steps:  
