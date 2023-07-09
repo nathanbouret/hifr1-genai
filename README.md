@@ -61,6 +61,28 @@ To launch the app, follow these two simple steps:
 
 You can now view the app in your default browser.  
 Local URL: http://localhost:8501  
+## used tools and services
+1. From Vertex AI:
+  PaLM 2 for Text (text-bison@001) For QA feature
+  PaLM 2 for Chat (chat-bison@001) For Chat feature
+
+2. From Document AI:
+  Document OCR processor to Convert pdf to txt
+  batch processor service to process many document parallelly 
+
+3. Google cloud storage (Bucket) to store our corpus and results
+4. From workbench:
+  User-managed notebooks
+
+6. Vertex AI Matching Engine:
+We tried this service to create a vector store and retrieve similar documents. Unfortunately, we could not integrate it to our pipeline due to the technical issues.
+
+Other tools:
+1. LangChain
+2. streamlit
+3. strealit-chat
+4.FAISS
+5.Chromadb
 
 ## Update the corpus data
 
