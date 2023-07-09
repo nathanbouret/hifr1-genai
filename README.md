@@ -13,10 +13,20 @@ Companies spend millions of dollars trying to beat their competition by anticipa
 Our solution is a LLM chat solution. We want the user to be able to either quickly have access to predefined prompts or be able to communicate directly with the engine. We want the user to have a quick and easy experience. To do so, we have created two different user experiences.  
 The first one is straight forward for the user. Depending on his profile, a couple different prompts are predefined and are directly given to them so they can get results within seconds without having to think about the prompt they want. The question we have defined are based on surveys we have collected from CxOs, and what we anticipate they might want and require out of such an app.  
 The second option allows the user, whatever their profile might be, to directly interact with the engine through a chatbot experience. With this chatbot, the user can directly ask whatever question they might have, and the model will only respond based on the corpus that we have provided it with. This last feature is what really differentiates our model from our competition.  
-On the backend of things, our solution runs on the Google Cloud Platform.  
+ 
+## Prerequisite
+1- On the backend side, ChatCEO solution runs on the Google Cloud Platform. As a prerequisite, you need to setup a gcp project and get the following informations:    
+'PROJECT_NAME':  
+'PROJECT_ID' :  
+'PROJECT_NUMBER'  
+'REGION' :  
+'BUCKET' :  
+'BUCKET_NAME':  
+'DIMENSIONS' :  
+The corpus pdf files should be loaded into your custom 'BUCKET'.  
+2- The app was developped sofar in Windows environnement. The following environment setup steps were defined for Windows machine. The app will be adapted for Linux and MacOS environnements in next versions.   
 
-
-## Environment Setup   
+## Environment Setup (local Windows machine OR VM)  
 
 1/ Create a virtual environnement:   
 example with conda:  
