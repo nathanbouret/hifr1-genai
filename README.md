@@ -82,8 +82,8 @@ Other tools:
 1. LangChain
 2. streamlit
 3. strealit-chat
-4.FAISS
-5.Chromadb
+4. FAISS
+5. Chromadb
 
 ## Update the corpus data
 
