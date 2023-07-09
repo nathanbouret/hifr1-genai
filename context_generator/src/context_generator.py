@@ -55,8 +55,8 @@ def generate_context(user_question, embeddings, vector_store_flag=False):
 
     for idx, doc in enumerate(docs_top_k):
         print(f"\n========== K:{idx} ==========")
-        # print(f"========== {get_source_file(doc.metadata['source'])} ==========")
-        print(f"{doc.page_content}")
+        print(f"========== {get_source_file(doc.metadata['file_name'])} ==========")
+        # print(f"{doc.page_content}")
         print(f"=========================================================================")
     # prepare a prompt where top k similar chuncks is a context for the LLM
     context = "\n".join([doc.page_content for doc in docs_top_k])
