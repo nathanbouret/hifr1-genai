@@ -95,4 +95,26 @@ In order to add new documents into the corpus, you need to do the following step
 4- Run the app as described above.    
 Due to the preprocessing step, the app may take a few minutes to run.   
 5- The steps 1, 2, 3, 4 are needed when add a new document into the corpus and they should be executed once.  
-To return to the default running mode, You need to "Stop" the app -> set "vector_store_flag" to "True" in config.py file -> Launch the app again.   
+To return to the default running mode, You need to "Stop" the app -> set "vector_store_flag" to "True" in config.py file -> Launch the app again. 
+
+## Deploy in Cloud Run
+
+To deploy from source, in your source code directory, execute the following command:
+
+    $ gcloud run deploy
+
+Answer the following propmts as follow:
+
+1. Reply y to enable the API.
+
+2. Source code location: press Enter to deploy the current folder.
+
+3. Service name: press Enter to accept the default name.
+
+4. Enable/Create the Artifact Registry API: respond y.
+
+5. Region: select us-central1.
+
+Normally you should be prompter to allow unauthenticated invocations, but for this project an authorization should be granted by the project owner.
+
+When the deployment is complete the command line displays the service URL. You can visit the deployed service by opening the service URL in a web browser.
